@@ -1,10 +1,7 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
-
-final _formKey = GlobalKey<FormState>();
-TextEditingController emailController = TextEditingController();
-TextEditingController passwordController = TextEditingController();
 
 void main() {
   runApp(const Warehouse());
@@ -21,13 +18,42 @@ class Warehouse extends StatelessWidget {
       child: MaterialApp(
         title: 'Warehouse',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Color.fromARGB(255, 55, 100, 197)),
           useMaterial3: true,
         ),
         home: const Login(title: 'Login'),
       )
     );
   }
+}
+
+class MyAppState extends ChangeNotifier {
+  // variable used in the website for every page
+  var current = WordPair(' ', ' ');
+  
+  void getNext() {
+    current = WordPair.random();
+    notifyListeners();
+  }
+
+  var favorites = <WordPair>[]; // list
+
+  void toggleFavourites(){
+    if (favorites.contains(current)){
+      favorites.remove(current);
+    }else {
+      favorites.add(current);
+    }
+    notifyListeners();
+  }
+
+  var current2 = WordPair('first', 'second');
+
+  int counter = 0;
+
+  final _formKey = GlobalKey<FormState>();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 }
 
 class Login extends StatefulWidget {
@@ -43,12 +69,13 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+  var appState = context.watch<MyAppState>();
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
       body: Form(
-        key: _formKey,
+        key: appState._formKey,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
           child: Column(
@@ -58,7 +85,7 @@ class _LoginState extends State<Login> {
               padding:
                 const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
-                  controller: emailController,
+                  controller: appState.emailController,
                   decoration: const InputDecoration(
                   border: OutlineInputBorder(), labelText: "Email"),
                   validator: (value) {
@@ -73,7 +100,7 @@ class _LoginState extends State<Login> {
               padding:
                 const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
                 child: TextFormField(
-                  controller: passwordController,
+                  controller: appState.passwordController,
                   obscureText: true,
                   decoration: const InputDecoration(
                   border: OutlineInputBorder(), labelText: "Password"),
@@ -91,9 +118,9 @@ class _LoginState extends State<Login> {
                   child: Center(
                     child: ElevatedButton(
                       onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (emailController.text == "test" &&
-                                        passwordController.text == "test") {
+                        if (appState._formKey.currentState!.validate()) {
+                          if (appState.emailController.text == "test" &&
+                                        appState.passwordController.text == "test") {
                               Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -124,30 +151,6 @@ class _LoginState extends State<Login> {
   }
 }
 
-class MyAppState extends ChangeNotifier {
-  var current = WordPair(' ', ' ');
-  
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
-  }
-
-  var favorites = <WordPair>[]; // list
-
-  void toggleFavourites(){
-    if (favorites.contains(current)){
-      favorites.remove(current);
-    }else {
-      favorites.add(current);
-    }
-    notifyListeners();
-  }
-
-  var current2 = WordPair('first', 'second');
-
-  int counter = 0;
-}
-
 class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -169,6 +172,9 @@ class _MyHomePageState extends State<MyHomePage> {
         break;
       case 2:
         page = ReportPage();
+        break;
+      case 3:
+        page = AddData();
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -194,6 +200,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     NavigationRailDestination(
                       icon: Icon(Icons.report),
                       label: Text('Report'),
+                    ),
+                    NavigationRailDestination(
+                      icon: Icon(Icons.add_circle),
+                      label: Text('Form'),
                     ),
                   ],
                   selectedIndex: selectedIndex, //-> to select default menu when start
@@ -306,6 +316,15 @@ class ReportPage extends StatelessWidget{
       ],
     ),
     );throw UnimplementedError();
+  }
+}
+
+class AddData extends StatelessWidget {
+  @override
+  Widget build (BuildContext context){
+    return Center(
+      
+    );
   }
 }
 
