@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -54,6 +57,11 @@ class MyAppState extends ChangeNotifier {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  final _InputDataKey2 = GlobalKey<FormState>();
+  TextEditingController objectName = TextEditingController();
+  TextEditingController objectClass = TextEditingController();
+  TextEditingController objectQuantity = TextEditingController();
 }
 
 class Login extends StatefulWidget {
@@ -174,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
         page = ReportPage();
         break;
       case 3:
-        page = AddData();
+        page = AddData(title: 'Input Form',);
         break;
       default:
         throw UnimplementedError('no widget for $selectedIndex');
@@ -309,21 +317,154 @@ class ReportPage extends StatelessWidget{
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-        Padding(
-          padding: const EdgeInsets.all(20),
-          child: Text('you have clicked ''${appState.counter} times'),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('you have clicked ''${appState.counter} times'),
           ),
-      ],
-    ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('${appState.objectName.value}'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('${appState.objectClass.value}'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('${appState.objectQuantity.value}'),
+          ),
+        ],
+      ),
     );throw UnimplementedError();
   }
 }
 
-class AddData extends StatelessWidget {
+class AddData extends StatefulWidget {
+  const AddData ({super.key, required this.title});
+  final String title;
+  @override
+  State<AddData> createState() => _AddDataState();
+}
+
+class _AddDataState extends State<AddData> {
+  @override
+  Widget build (BuildContext context){
+  var appState = context.watch<MyAppState>();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.title),
+      ),
+      body: Form(
+        key: appState._InputDataKey2,
+        child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: 
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: TextFormField(
+                      controller: appState.objectName,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: "Item Name"),
+                      validator: (String? value){
+                        if (value == null || value.isEmpty) {
+                            return 'Please fill the field';
+                          }
+                        return null;
+                      },
+                    ),
+                ),
+                Padding(
+                  padding: 
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: TextFormField(
+                      controller: appState.objectClass,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: "Class Item"),
+                      validator: (String? value){
+                        if (value == null || value.isEmpty) {
+                            return 'Please fill the field';
+                          }
+                        return null;
+                      },
+                    ),
+                ),
+                Padding(
+                  padding: 
+                  const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+                    child: TextFormField(
+                      inputFormatters: [
+                        FilteringTextInputFormatter.digitsOnly
+                      ],
+                      controller: appState.objectQuantity,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: "Quantity Item"),
+                      validator: (String? value){
+                        if (value == null || value.isEmpty) {
+                            return 'Please fill the field';
+                          }
+                        return null;
+                      },
+                    ),
+                ),
+                Padding(
+                  padding:
+                    const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                      child: Center(
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (appState._InputDataKey2.currentState!.validate()){
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => thankyou()),
+                              );
+                            }
+                            else{
+                              
+                            }
+                          },
+                        child: const Text('Submit'),
+                      ),
+                    ),
+                ),
+              ],
+            ),
+          ),
+        ),
+    );
+  }
+}
+
+class thankyou extends StatelessWidget{
   @override
   Widget build (BuildContext context){
     return Center(
-      
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Text('Thank you for the input'),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: ElevatedButton(
+              onPressed: (){
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(
+                //     builder: (context) => MyHomePage(),
+                //   ),
+                // );
+                Navigator.pop(context);
+              },
+              child: const Text('Go Back'),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
