@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-// buat halaman baru buat input data
+// buat refresh table setelah add data
 
 void main() {
   runApp(const Warehouse());
@@ -341,19 +341,43 @@ class ReportPage extends StatelessWidget{
               Padding(
                 padding:
                  const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
-                 child: Center(
-                    child: ElevatedButton(
-                      onPressed: (){
-                        Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => AddData(title: 'Input Data',
-                                ),
+                 child: Row(
+                    children: [
+                      Padding(
+                        padding: 
+                        const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                        child: ElevatedButton(
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => AddData(title: 'Input Data',
                               ),
-                            );
-                      },
+                            ),
+                          );
+                        },
                       child: const Text('Add Data'),
+                      ),
                     ),
+                    Padding(
+                      padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                      child: Center(
+                          child: ElevatedButton(
+                            onPressed: (){
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AddData(title: 'Input Data',
+                                  ),
+                                ),
+                              );
+                            },
+                            child: const Text('refresh'),
+                          ),
+                      ),
+                    ),
+                  ],
                  ),
               ),
               DataTable(
