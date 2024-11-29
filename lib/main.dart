@@ -359,24 +359,26 @@ class ReportPage extends StatelessWidget{
                       child: const Text('Add Data'),
                       ),
                     ),
-                    Padding(
-                      padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
-                      child: Center(
-                          child: ElevatedButton(
-                            onPressed: (){
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AddData(title: 'Input Data',
-                                  ),
-                                ),
-                              );
-                            },
-                            child: const Text('refresh'),
-                          ),
-                      ),
-                    ),
+                    // -- Buat tambahan tombol --
+                    // Padding(
+                    //   padding:
+                    //   const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                    //   child: Center(
+                    //       child: ElevatedButton(
+                    //         onPressed: (){
+                    //           Navigator.push(
+                    //             //ada perubahan
+                    //             context,
+                    //             MaterialPageRoute(
+                    //               builder: (context) => AddData(title: 'Input Data',
+                    //               ),
+                    //             ),
+                    //           );
+                    //         },
+                    //         child: const Text('refresh'),
+                    //       ),
+                    //   ),
+                    // ),
                   ],
                  ),
               ),
@@ -516,11 +518,12 @@ class _AddDataState extends State<AddData> {
                           onPressed: () {
                             if (appState._InputDataKey2.currentState!.validate()){
                               appState.addNewData();
-                              // Navigator.push(
-                              // context,
-                              // MaterialPageRoute(builder: (context) => thankyou()),
-                              // );
-                              Navigator.pop(context);
+                              Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => ReportPage()),
+                              ).then((value) => setState(() {})
+                              );
+                              // Navigator.pop(context);
                               appState.clearAddData();
                             }
                           },
@@ -536,35 +539,11 @@ class _AddDataState extends State<AddData> {
   }
 }
 
-// class thankyou extends StatelessWidget{
+// class refreshPage extends StatelessWidget{
 //   @override
 //   Widget build (BuildContext context){
-//     return Center(
-//       child: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           Padding(
-//             padding: const EdgeInsets.all(20),
-//             child: Text('Thank you for the input'),
-//           ),
-//           Padding(
-//             padding: const EdgeInsets.all(20),
-//             child: ElevatedButton(
-//               onPressed: (){
-//                 Navigator.push(
-//                   context,
-//                   MaterialPageRoute(
-//                     builder: (context) => MyHomePage(),
-//                   ),
-//                 );
-//                 // Navigator.pop(context);
-//               },
-//               child: const Text('Go Back'),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
+//     return 
+//     Navigator.pop(context, true);
 //   }
 // }
 
