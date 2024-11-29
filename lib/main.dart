@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
-// buat list untuk tampung input
 // buat halaman baru buat input data
 
 void main() {
@@ -333,59 +332,84 @@ class ReportPage extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
   var appState = context.watch<MyAppState>();
-    return DataTable(
-      // Padding(
-        //   padding: const EdgeInsets.all(20),
-        //   child: Text('you have clicked ''${appState.counter} times'),
-        // ),
-      columns: [
-        DataColumn(
-          label: Expanded (
-            child: Text ('Name',
-              style: TextStyle(fontStyle: FontStyle.italic
+    return Scaffold(
+      body: Form(
+        child: Container(
+          alignment: Alignment.topLeft,
+          child: Column(
+            children: [
+              Padding(
+                padding:
+                 const EdgeInsets.symmetric(horizontal: 8, vertical: 16.0),
+                 child: Center(
+                    child: ElevatedButton(
+                      onPressed: (){
+                        Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AddData(title: 'Input Data',
+                                ),
+                              ),
+                            );
+                      },
+                      child: const Text('Add Data'),
+                    ),
+                 ),
               ),
-            ),
+              DataTable(
+                columns: [
+                  DataColumn(
+                    label: Expanded (
+                      child: Text ('Name',
+                        style: TextStyle(fontStyle: FontStyle.italic
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded (
+                      child: Text ('Class',
+                        style: TextStyle(fontStyle: FontStyle.italic
+                        ),
+                      ),
+                    ),
+                  ),
+                  DataColumn(
+                    label: Expanded (
+                      child: Text ('Quantity',
+                        style: TextStyle(fontStyle: FontStyle.italic
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                rows: [
+                  for (var i = 0; i <= appState.objectsName.length-1; i++)
+                    DataRow(
+                    cells: <DataCell>[
+                      DataCell(Text('${appState.objectsName[i]}')),
+                      DataCell(Text('${appState.objectsClass[i]}')),
+                      DataCell(Text('${appState.objectsQuantity[i]}')),
+                    ]
+                  ) 
+                ],
+                // Padding(
+                //     padding: const EdgeInsets.all(20),
+                //     child: Text('${appState.objectName.text}'),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.all(20),
+                //     child: Text('${appState.objectClass.text}'),
+                //   ),
+                //   Padding(
+                //     padding: const EdgeInsets.all(20),
+                //     child: Text('${appState.objectQuantity.text}'),
+                //   ),
+              ),
+            ],
           ),
         ),
-        DataColumn(
-          label: Expanded (
-            child: Text ('Class',
-              style: TextStyle(fontStyle: FontStyle.italic
-              ),
-            ),
-          ),
-        ),
-        DataColumn(
-          label: Expanded (
-            child: Text ('Quantity',
-              style: TextStyle(fontStyle: FontStyle.italic
-              ),
-            ),
-          ),
-        ),
-      ],
-      rows: [
-        for (var i = 0; i <= appState.objectsName.length-1; i++)
-          DataRow(
-          cells: <DataCell>[
-            DataCell(Text('${appState.objectsName[i]}')),
-            DataCell(Text('${appState.objectsClass[i]}')),
-            DataCell(Text('${appState.objectsQuantity[i]}')),
-          ]
-        ) 
-      ],
-      // Padding(
-      //     padding: const EdgeInsets.all(20),
-      //     child: Text('${appState.objectName.text}'),
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.all(20),
-      //     child: Text('${appState.objectClass.text}'),
-      //   ),
-      //   Padding(
-      //     padding: const EdgeInsets.all(20),
-      //     child: Text('${appState.objectQuantity.text}'),
-      //   ),
+      ),
     );throw UnimplementedError();
   }
 }
@@ -468,10 +492,11 @@ class _AddDataState extends State<AddData> {
                           onPressed: () {
                             if (appState._InputDataKey2.currentState!.validate()){
                               appState.addNewData();
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => thankyou()),
-                              );
+                              // Navigator.push(
+                              // context,
+                              // MaterialPageRoute(builder: (context) => thankyou()),
+                              // );
+                              Navigator.pop(context);
                               appState.clearAddData();
                             }
                           },
@@ -487,37 +512,37 @@ class _AddDataState extends State<AddData> {
   }
 }
 
-class thankyou extends StatelessWidget{
-  @override
-  Widget build (BuildContext context){
-    return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Text('Thank you for the input'),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: ElevatedButton(
-              onPressed: (){
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(
-                //     builder: (context) => MyHomePage(),
-                //   ),
-                // );
-                Navigator.pop(context);
-              },
-              child: const Text('Go Back'),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class thankyou extends StatelessWidget{
+//   @override
+//   Widget build (BuildContext context){
+//     return Center(
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Padding(
+//             padding: const EdgeInsets.all(20),
+//             child: Text('Thank you for the input'),
+//           ),
+//           Padding(
+//             padding: const EdgeInsets.all(20),
+//             child: ElevatedButton(
+//               onPressed: (){
+//                 Navigator.push(
+//                   context,
+//                   MaterialPageRoute(
+//                     builder: (context) => MyHomePage(),
+//                   ),
+//                 );
+//                 // Navigator.pop(context);
+//               },
+//               child: const Text('Go Back'),
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
 
 class BigCard extends StatelessWidget {
   const BigCard({
