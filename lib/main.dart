@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 
 // buat refresh table setelah add data
+// buat menu bar di kiri ttp ad ketika add data
 
 void main() {
   runApp(const Warehouse());
@@ -413,8 +414,8 @@ class ReportPage extends StatelessWidget{
                   for (var i = 0; i <= appState.objectsName.length-1; i++)
                     DataRow(
                     cells: <DataCell>[
-                      DataCell(Text('${appState.objectsName[i]}')),
-                      DataCell(Text('${appState.objectsClass[i]}')),
+                      DataCell(Text(appState.objectsName[i])),
+                      DataCell(Text(appState.objectsClass[i])),
                       DataCell(Text('${appState.objectsQuantity[i]}')),
                     ]
                   ) 
@@ -518,12 +519,12 @@ class _AddDataState extends State<AddData> {
                           onPressed: () {
                             if (appState._InputDataKey2.currentState!.validate()){
                               appState.addNewData();
-                              Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => ReportPage()),
-                              ).then((value) => setState(() {})
-                              );
-                              // Navigator.pop(context);
+                              // Navigator.push(
+                              // context,
+                              // MaterialPageRoute(builder: (context) => ReportPage()),
+                              // // ).then((value) => setState(() {})
+                              // );
+                              Navigator.pop(context, true);
                               appState.clearAddData();
                             }
                           },
