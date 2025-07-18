@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:english_words/english_words.dart';
@@ -332,7 +333,34 @@ class FavoritesPage extends StatelessWidget {
   }
 }
 
-class ReportPage extends StatelessWidget{
+class ReportPage extends StatefulWidget{
+  @override
+  State<ReportPage> createState() => _ReportPage();
+}
+
+class _ReportPage extends State<ReportPage> {
+  //auto refresh
+  Timer? _timer;
+  int _counter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _timer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (!mounted) return;
+      setState(() {
+        _counter++; // Or refresh your data here
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel(); // Cancel timer to avoid memory leaks
+    super.dispose();
+  }
+
+  //build the table
   @override
   Widget build(BuildContext context) {
   var appState = context.watch<MyAppState>();
@@ -455,7 +483,7 @@ class _AddDataState extends State<AddData> {
   @override
   Widget build (BuildContext context){
   var appState = context.watch<MyAppState>();
-    return Scaffold(
+      return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
